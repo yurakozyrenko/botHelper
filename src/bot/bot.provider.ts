@@ -2,7 +2,6 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger, LoggerService, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as TelegramBot from 'node-telegram-bot-api';
-import { ChatMember, User } from 'node-telegram-bot-api';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -19,27 +18,14 @@ export class BotProvider implements OnModuleInit {
   ) {
     this.botToken = this.configService.get('BOT_TOKEN');
     this.bot = new TelegramBot(this.botToken, { polling: false });
-    this.bot.setMyCommands([{ command: 'start', description: 'Запустить бота' }]);
+    this.bot.setMyCommands([
+      { command: 'start', description: 'Запустить бота' },
+      { command: 'price', description: 'Получить курс BTC' },
+    ]);
   }
 
   async sendMessage(chatId: number, message: string) {
     await this.bot.sendMessage(chatId, message);
-  }
-
-  async getChatMember(chatId: number, userId: number): Promise<ChatMember> {
-    return await this.bot.getChatMember(chatId, userId);
-  }
-
-  async banChatMember(chatId: number, userId: number) {
-    await this.bot.banChatMember(chatId, userId);
-  }
-
-  async getChatAdministrators(chatId: number): Promise<ChatMember[]> {
-    return await this.bot.getChatAdministrators(chatId);
-  }
-
-  async getMe(): Promise<User> {
-    return await this.bot.getMe();
   }
 
   async onModuleInit() {

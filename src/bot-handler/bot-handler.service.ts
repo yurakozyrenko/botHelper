@@ -4,7 +4,7 @@ import { Cron } from '@nestjs/schedule';
 import { lastValueFrom } from 'rxjs';
 import * as crypto from 'crypto';
 
-import { Actions, fileUrlBinance, messages } from '../bot/bot.constants';
+import { Actions, fileUrlBinance, fileUrlPayeer, messages } from '../bot/bot.constants';
 import { BotService } from '../bot/bot.service';
 
 @Injectable()
@@ -57,7 +57,7 @@ export class BotHandlerService {
     this.logger.log(`Default successfully ended ${chatId}`);
   }
 
-  @Cron('0 */5 * * * *')
+  @Cron('0 */10 * * * *')
   async fetchBitcoinPrice() {
     this.logger.log('Fetching BTC price...');
     const priceMessage = await this.getBitcoinPriceMessage();
@@ -79,7 +79,6 @@ export class BotHandlerService {
   async getBitcoinPriceMessage(): Promise<string> {
     try {
       const apiId = 'bd443f00-092c-4436-92a4-a704ef679e24';
-      // const apiUrl = 'https://payeer.com/api/trade/';
       const apiSecret = 'api_secret_key';
       const method = 'ticker';
       const ts = Math.floor(Date.now());
@@ -93,7 +92,7 @@ export class BotHandlerService {
 
       const { data } = await lastValueFrom(
         // this.httpService.post(`${this.apiUrl}${method}`, req, {
-        this.httpService.post(`${fileUrlBinance}${method}`, req, {
+        this.httpService.post(`${fileUrlPayeer}${method}`, req, {
           headers: {
             'Content-Type': 'application/json',
             // 'API-ID': this.apiId,

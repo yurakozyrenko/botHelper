@@ -8,4 +8,5 @@ export const messages = {
   DEFAULT: `Это бот для выполнения действий пользователей из чатов. Выбери из Меню`,
 };
 
-export const fileUrl = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
+export const fileUrlBinance = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
+export const fileUrlPayeer = 'https://payeer.com/api/trade/';
